@@ -40,7 +40,9 @@ export default class GotService extends Component {
   }
 
   _transformCharacter(char) {
+    const id = Number(char.url.split('/').slice(-1));
     return {
+      id: id || 'no data',
       name: char.name || 'no data',
       gender: char.gender || 'no data',
       born: char.born || 'no data',
