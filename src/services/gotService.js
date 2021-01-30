@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 export default class GotService extends Component {
   apiBase = 'https://www.anapioficeandfire.com/api';
 
-  async getResource(url) {
+  getResource = async (url) => {
     const res = await fetch(`${this.apiBase}${url}`);
 
     if (!res.ok) {
@@ -11,35 +11,52 @@ export default class GotService extends Component {
     }
 
     return await res.json();
-  }
+  };
 
-  async getAllCharacters() {
+  getAllCharacters = async () => {
     const res = await this.getResource(`/characters?page=5&pageSize=10`);
     return await res.map(this._transformCharacter);
-  }
+  };
 
-  async getCharacter(id) {
+  getCharacter = async (id) => {
     const character = await this.getResource(`/characters/${id}`);
     return await this._transformCharacter(character);
-  }
+  };
 
-  getAllHouses() {
-    return this.getResource(`/houses`);
-  }
+  getAllHouses = async () => {
+    const res = await this.getResource(`/houses`);
+    return await res.map(this._transformHouse);
+  };
 
-  getHouse(id) {
-    return this.getResource(`/houses/${id}`);
-  }
+  getHouse = async (id) => {
+    const house = await this.getResource(`/houses/${id}`);
+    return await this._transformHouse(house);
+  };
 
-  getAllBooks() {
-    return this.getResource(`/books`);
-  }
+  getAllBooks = async () => {
+    const res = await this.getResource(`/books`);
+    return await res.map(this._transformBook);
+  };
 
-  getBook(id) {
-    return this.getResource(`/books/${id}`);
-  }
+  getBook = async (id) => {
+    const book = await this.getResource(`/books/${id}`);
+    return await this._transformBook(book);
+  };
 
-  _transformCharacter(char) {
+  isSet = (data) => {
+    if (data) {
+      return data;
+    } else {
+      return 'no data :(';
+    }
+  };
+
+  _extractId = (item) => {
+    const idRegExp = /\/([0-9]*)$/;
+    return item.url.match(idRegExp)[1];
+  };
+
+  _transformCharacter = (char) => {
     const id = Number(char.url.split('/').slice(-1));
     return {
       id: id || 'no data',
@@ -49,10 +66,13 @@ export default class GotService extends Component {
       died: char.died || 'no data',
       culture: char.culture || 'no data',
     };
-  }
+  };
 
-  _transformHourse(house) {
+  _transformHouse = (house) => {
+    const id = this._extractId(house);
+    // const id = Number(house.url.split('/').slice(-1));
     return {
+      id: id || 'no data',
       name: house.name || 'no data',
       region: house.region || 'no data',
       words: house.words || 'no data',
@@ -60,14 +80,16 @@ export default class GotService extends Component {
       overload: house.overload || 'no data',
       ancestralWeapons: house.ancestralWeapons || 'no data',
     };
-  }
+  };
 
-  _transformBook(book) {
+  _transformBook = (book) => {
+    const id = Number(book.url.split('/').slice(-1));
     return {
+      id: id || 'no data',
       name: book.name || 'no data',
       numberOfPages: book.numberOfPages || 'no data',
       publisher: book.publisher || 'no data',
       released: book.released || 'no data',
     };
-  }
+  };
 }

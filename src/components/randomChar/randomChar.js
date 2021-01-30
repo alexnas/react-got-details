@@ -41,7 +41,7 @@ export default class RandomChar extends Component {
 
   componentDidMount() {
     this.updateChar();
-    this.timeId = setInterval(this.updateChar, 4000);
+    // this.timeId = setInterval(this.updateChar, 40000);
   }
 
   componentDidUpdate() {}
