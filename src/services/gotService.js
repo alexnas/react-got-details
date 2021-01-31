@@ -57,7 +57,8 @@ export default class GotService extends Component {
   };
 
   _transformCharacter = (char) => {
-    const id = Number(char.url.split('/').slice(-1));
+    const id = this._extractId(char);
+    // const id = char.url.split('/').slice(-1);
     return {
       id: id || 'no data',
       name: char.name || 'no data',
@@ -70,7 +71,7 @@ export default class GotService extends Component {
 
   _transformHouse = (house) => {
     const id = this._extractId(house);
-    // const id = Number(house.url.split('/').slice(-1));
+    // const id = house.url.split('/').slice(-1);
     return {
       id: id || 'no data',
       name: house.name || 'no data',
@@ -83,7 +84,8 @@ export default class GotService extends Component {
   };
 
   _transformBook = (book) => {
-    const id = Number(book.url.split('/').slice(-1));
+    const id = this._extractId(book);
+    // const id = book.url.split('/').slice(-1);
     return {
       id: id || 'no data',
       name: book.name || 'no data',
